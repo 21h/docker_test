@@ -6,7 +6,7 @@ RUN apt-get update \
     && echo mysql-server mysql-server/root_password password 123456 | debconf-set-selections \
     && echo mysql-server mysql-server/root_password_again password 123456 | debconf-set-selections \
     && apt-get install -y mysql-server -o pkg::Options::="--force-confdef" -o pkg::Options::="--force-confold" --fix-missing
-RUN echo mysql-server postfix/main_mailer_type text "No configuration" | debconf-set-selections \
+RUN echo postfix postfix/main_mailer_type text "No configuration" | debconf-set-selections \
     && apt-get install -y postfix -o pkg::Options::="--force-confdef" -o pkg::Options::="--force-confold" --fix-missing
 COPY latest.tar.gz /tmp/latest.tar.gz
 RUN tar -xvzf /tmp/latest.tar.gz -C /var/www
