@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+    web:
+        image: nginx:latest
+        ports:
+            - "8080:80"
+        volumes:
+            - ./wordpress:/wordpress
+            - ./conf/wpsite.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - code-network
+    php:
+        image: php:fpm
+        volumes:
+            - ./wordpress:/wordpress
+        networks:
+            - code-network
+
+    database:
+        image: mysql
+        container_name: database.dev
+        command: mysqld --user=root --verbose
+        volumes:
+            - ./db:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: "toor"
+        networks:
+            - code-network
+
+networks:
+    code-network:
+        driver: bridge
